@@ -9,7 +9,7 @@ const Copyright: FC<any> = (props: any) => {
       align="center"
       {...props}
     >
-      {"Copyright © Signal Three Consulting Inc. "}
+      {"Copyright © Engineered Cash Flow LLC "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
