@@ -34,8 +34,6 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PersonIcon from "@mui/icons-material/Person";
-import PaidIcon from "@mui/icons-material/Paid";
-import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
 
 import { useAsyncAction } from "hooks/async";
 import { useKeyPress } from "hooks/events";
@@ -51,32 +49,23 @@ interface ClientActionOption {
 
 interface ClientSpec {
   userId: string;
-  hasPaid: boolean;
 }
 
 type ClientProps = ClientSpec & {
   actionButtons: ClientActionOption[];
 };
-const Client: FC<ClientProps> = ({ userId, hasPaid, actionButtons }) => {
+const Client: FC<ClientProps> = ({ userId, actionButtons }) => {
   const [actionMenuAnchorEl, setActionMenuAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const actionMenuOpen = Boolean(actionMenuAnchorEl);
-  const [paymentIcon, setPaymentIcon] = React.useState<React.ReactElement>(
-    <DoNotDisturbOnIcon />
-  );
+
   const handleActionMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setActionMenuAnchorEl(event.currentTarget);
   };
   const handleActionMenuClose = () => {
     setActionMenuAnchorEl(null);
   };
-  React.useEffect(() => {
-    if (hasPaid) {
-      setPaymentIcon(<PaidIcon />);
-    } else {
-      setPaymentIcon(<DoNotDisturbOnIcon />);
-    }
-  }, [hasPaid]);
+
 
   return (
     <TableRow hover>
@@ -84,13 +73,6 @@ const Client: FC<ClientProps> = ({ userId, hasPaid, actionButtons }) => {
         <Tooltip title={`Client ${userId}`}>
           <Chip icon={<PersonIcon />} label={userId} variant="outlined" />
         </Tooltip>
-      </TableCell>
-      <TableCell>
-        <Chip
-          icon={paymentIcon}
-          label={hasPaid ? "Paid" : "Unpaid"}
-          variant="filled"
-        />
       </TableCell>
       <TableCell sx={{ textAlign: "right" }}>
         <Button onClick={handleActionMenuClick}>Actions</Button>
@@ -188,7 +170,6 @@ const NewClientModal: FC<ClientModalProps> = ({
     }
     const success = await doCreateClient({
       userId,
-      hasPaid: false,
     });
     if (success) {
       reset();
@@ -289,7 +270,6 @@ const ClientsTab: FC<{
     () =>
       (clients || {}).map((client) => ({
         userId: client.id,
-        hasPaid: client.data()?.accounting?.hasPaid,
       })),
     [clients]
   );
@@ -300,18 +280,6 @@ const ClientsTab: FC<{
       } else if (clientAction === ClientAction.ADD) {
         console.log("adding user", actionClientId);
         setDoc(doc(clientsConfigRef, actionClientId), DEFAULT_USER_CONFIG);
-      } else if (clientAction === ClientAction.PAID) {
-        updateDoc(
-          doc(clientsConfigRef, actionClientId),
-          "accounting.hasPaid",
-          true
-        );
-      } else if (clientAction === ClientAction.UNPAID) {
-        updateDoc(
-          doc(clientsConfigRef, actionClientId),
-          "accounting.hasPaid",
-          false
-        );
       }
     }
   }, [clientAction, actionClientId, clientsConfigRef]);
@@ -346,22 +314,6 @@ const ClientsTab: FC<{
               },
               title: (userId: string) => `Delete user ${userId}`,
               ActionIcon: DeleteIcon,
-            },
-            {
-              doAction: (userId: string) => {
-                setActionClientId(userId);
-                setClientAction(ClientAction.PAID);
-              },
-              title: (userId: string) => `Mark user ${userId} paid`,
-              ActionIcon: PaidIcon,
-            },
-            {
-              doAction: (userId: string) => {
-                setActionClientId(userId);
-                setClientAction(ClientAction.UNPAID);
-              },
-              title: (userId: string) => `Mark user ${userId} unpaid`,
-              ActionIcon: DoNotDisturbOnIcon,
             },
           ]}
         />

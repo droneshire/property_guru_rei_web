@@ -22,7 +22,7 @@ export const BackendTab: FC<{
 }> = ({ healthMonitorSnapshot }) => {
   const heartbeat = healthMonitorSnapshot?.get("heartbeat");
   const [heartbeatString, setHeartbeatString] = useState<string>("Offline");
-  const [heartbeatColor, setHeartbeatColor] = useState<"red" | "grey">("grey");
+  const [heartbeatColor, setHeartbeatColor] = useState<"blue" | "grey">("grey");
   const [heartbeatSeconds, setHeartbeatSeconds] = useState<number>(
     heartbeat?.seconds ?? timeBetweenHeartbeatSeconds + 1
   );
@@ -37,7 +37,7 @@ export const BackendTab: FC<{
         setHeartbeatColor("grey");
       } else {
         setHeartbeatString("Online");
-        setHeartbeatColor("red");
+        setHeartbeatColor("blue");
       }
       setHeartbeatSeconds(newHeartbeat);
     }

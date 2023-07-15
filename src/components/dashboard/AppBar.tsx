@@ -92,7 +92,7 @@ const AppBar: FC<AppBarProps> = ({
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          NC ABC Inventory Tracker
+          Property Guru REI Alert
         </Typography>
         <IconButton onClick={toggleUserMenu}>
           <Avatar alt="User Account" src={user.photoURL || ""}>

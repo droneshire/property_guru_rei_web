@@ -51,7 +51,7 @@ const DashboardPage: FC<DashboardProps> = ({ user }) => {
       return undefined;
     }
     return doc(
-      collection(db, "clients") as CollectionReference<ClientConfig>,
+      collection(db, "user") as CollectionReference<ClientConfig>,
       user?.email ?? ""
     );
   }, [user, db]);
@@ -66,7 +66,7 @@ const DashboardPage: FC<DashboardProps> = ({ user }) => {
   }, [user, db]);
   const clientsConfigRef = useMemo(() => {
     if (user && ADMIN_USERS.includes(user.email ?? "")) {
-      return collection(db, "clients") as CollectionReference<ClientConfig>;
+      return collection(db, "user") as CollectionReference<ClientConfig>;
     }
     return undefined;
   }, [user, db]);

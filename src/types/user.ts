@@ -1,36 +1,18 @@
 
-export enum ItemAction {
-  TRACKING = "TRACKING",
-  UNTRACKED = "UNTRACKED",
-}
-
 export enum ClientAction {
   NONE = "NONE",
   DELETE = "DELETE",
   ADD = "ADD",
-  PAID = "PAID",
-  UNPAID = "UNPAID",
 }
 
-export interface Inventory {
-  items: {
-    [id: string]: {
-      // The current action for the team to perform
-      action: ItemAction;
-      name: string;
-      available: number;
-    };
-  };
-  inventoryChange: number;
-  minHoursSinceOutOfStock: number;
-}
-
-export interface AlertTimeZone {
-  abbrev: string;
-  altName: string;
-  label: string;
-  offset: number;
-  value: string;
+export interface SearchParams {
+  search_string: string;
+  baths: number[];
+  beds: number[];
+  maxPrice: number;
+  minPrice: number;
+  maxSize: number;
+  minSize: number;
 }
 
 export interface Preferences {
@@ -38,9 +20,6 @@ export interface Preferences {
     sms: {
       phoneNumber: string;
       updatesEnabled: boolean;
-      alertTimeRange: number[];
-      alertTimeZone: AlertTimeZone;
-      alertWindowEnabled: boolean;
     };
     email: {
       email: string;
@@ -49,47 +28,28 @@ export interface Preferences {
   };
 }
 
-export interface Accounting {
-  plan: string;
-  nextBillingDate: string;
-  nextBillingAmount: number;
-  hasPaid: boolean;
-}
-
 export interface ClientConfig {
-  inventory: Inventory;
   preferences: Preferences;
-  accounting: Accounting;
+  search_params: SearchParams;
 }
 
 export const DEFAULT_USER_CONFIG = {
-  inventory: {
-    items: {},
-    inventoryChange: 1,
-    minHoursSinceOutOfStock: 0,
-  },
-  accounting: {
-    hasPaid: false,
-    plan: "",
-    nextBillingDate: "",
-    nextBillingAmount: 0.0,
-  },
   preferences: {
     notifications: {
       email: { email: "", updatesEnabled: true },
       sms: {
         phoneNumber: "",
         updatesEnabled: true,
-        alertTimeZone: {
-          abbrev: "PDT",
-          altName: "Pacific Daylight Time",
-          label: "(GMT-07:00) Pacific Time",
-          offset: -7,
-          value: "America/Los_Angeles",
-        },
-        alertTimeRange: [],
-        alertWindowEnabled: false,
       },
     },
+  },
+  search_params: {
+    search_string: "",
+    baths: [1, 2, 3, 4, 5],
+    beds: [1, 2, 3, 4, 5],
+    maxPrice: 1000000,
+    minPrice: 0,
+    maxSize: 10000,
+    minSize: 0,
   },
 }
