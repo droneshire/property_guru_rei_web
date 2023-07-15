@@ -3,13 +3,11 @@ import { DocumentSnapshot } from "firebase/firestore";
 import {
   Typography,
   FormGroup,
-  FormControlLabel,
   Divider,
 } from "@mui/material";
 
 import { ClientConfig } from "types/user";
 import {
-  FirestoreBackedSwitch,
   FirestoreBackedTextField,
 } from "components/utils/forms";
 
