@@ -8,11 +8,7 @@ import { TabPanel } from "components/utils/tabs";
 
 const PreferencesView: FC = () => {
   const {
-    user,
     userConfigSnapshot,
-    userConfigRef,
-    clientsSnapshot,
-    clientsConfigRef,
   } = useOutletContext<DashboardViewContext>();
   const preferences = userConfigSnapshot?.get("preferences");
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(

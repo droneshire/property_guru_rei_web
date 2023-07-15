@@ -384,8 +384,6 @@ export function FirestoreBackedTimeZoneSelect<DocType extends object>({
   const {
     runAction: update,
     running: updating,
-    error,
-    clearError,
   } = useAsyncAction((enabled: number) =>
     updateDoc(docSnap.ref, fieldPath, enabled)
   );
