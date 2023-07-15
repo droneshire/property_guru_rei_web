@@ -6,7 +6,7 @@ export enum ClientAction {
 }
 
 export interface SearchParams {
-  search_string: string;
+  searchString: string;
   baths: number[];
   beds: number[];
   maxPrice: number;
@@ -30,7 +30,7 @@ export interface Preferences {
 
 export interface ClientConfig {
   preferences: Preferences;
-  search_params: SearchParams;
+  searchParams: SearchParams;
 }
 
 export const DEFAULT_USER_CONFIG = {
@@ -43,8 +43,8 @@ export const DEFAULT_USER_CONFIG = {
       },
     },
   },
-  search_params: {
-    search_string: "",
+  searchParams: {
+    searchString: "",
     baths: [1, 2, 3, 4, 5],
     beds: [1, 2, 3, 4, 5],
     maxPrice: 1000000,
