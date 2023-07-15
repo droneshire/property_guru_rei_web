@@ -1,5 +1,5 @@
 import NotificationsTab from "./NotificationsTab";
-// import OtherPreferencesTab from "./OtherPreferences";
+import SearchParamsTab from "./SearchParamsTab";
 
 const preferencesTabsList = [
   {
@@ -7,7 +7,11 @@ const preferencesTabsList = [
     label: "Notifications",
     component: NotificationsTab,
   },
-  // { key: "other", label: "Other", component: OtherPreferencesTab },
+  {
+    key: "searchParams",
+    label: "Search Parameters",
+    component: SearchParamsTab,
+  },
 ];
 
 export default preferencesTabsList;
