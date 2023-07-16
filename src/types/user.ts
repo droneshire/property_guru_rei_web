@@ -7,8 +7,10 @@ export enum ClientAction {
 
 export interface SearchParams {
   searchString: string;
-  baths: number[];
-  beds: number[];
+  minBaths: number;
+  maxBaths: number;
+  minBeds: number;
+  maxBeds: number;
   maxPrice: number;
   minPrice: number;
   maxSize: number;
@@ -45,8 +47,10 @@ export const DEFAULT_USER_CONFIG = {
   },
   searchParams: {
     searchString: "",
-    baths: [1, 2, 3, 4, 5],
-    beds: [1, 2, 3, 4, 5],
+    minBaths: 1,
+    maxBaths: 5,
+    minBeds: 1,
+    maxBeds: 6,
     maxPrice: 1000000,
     minPrice: 0,
     maxSize: 10000,

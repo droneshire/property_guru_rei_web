@@ -84,7 +84,7 @@ export function FirestoreBackedSwitch<DocType extends object>({
   );
 }
 
-interface FirestoreBackedSiderProps<DocType extends object>
+interface FirestoreBackedSliderProps<DocType extends object>
   extends SliderProps {
   docSnap: DocumentSnapshot<DocType>;
   fieldPath: NestedKeyOf<DocType>;
@@ -95,7 +95,7 @@ export function FirestoreBackedSlider<DocType extends object>({
   fieldPath,
   disabled,
   ...props
-}: FirestoreBackedSiderProps<DocType>) {
+}: FirestoreBackedSliderProps<DocType>) {
   const savedValue = docSnap.get(fieldPath);
   const [value, setValue] = useState(savedValue ?? 1);
   const {
@@ -120,6 +120,101 @@ export function FirestoreBackedSlider<DocType extends object>({
         disabled={disabled || updating}
         onChange={(_, value) => setValue(value)}
         onChangeCommitted={(_, value) => update(value as number)}
+        {...props}
+      />
+      <Snackbar open={!!error} autoHideDuration={5000} onClose={clearError}>
+        <Alert onClose={clearError} severity="error" sx={{ width: "100%" }}>
+          {`Failed to update: ${error}`}
+        </Alert>
+      </Snackbar>
+    </>
+  );
+}
+
+interface FirestoreBackedRangeSliderProps<DocType extends object>
+  extends FirestoreBackedSliderProps<DocType> {
+  fieldPathStart?: NestedKeyOf<DocType>;
+  minDistance?: number;
+}
+export function FirestoreBackedRangeSlider<DocType extends object>({
+  docSnap,
+  fieldPath,
+  disabled,
+  fieldPathStart,
+  minDistance,
+  ...props
+}: FirestoreBackedRangeSliderProps<DocType>) {
+  let startValue = 0;
+  const minDistanceValue = minDistance ?? 0;
+
+  if (fieldPathStart) {
+    startValue = docSnap.get(fieldPathStart);
+  }
+
+  const [saveValue, setSaveValue] = useState<number[]>([
+    startValue,
+    docSnap.get(fieldPath),
+  ]);
+  const [value, setValue] = useState<number[]>([
+    saveValue[0] ?? props.min ?? 0,
+    saveValue[1] ?? props.max ?? 1,
+  ]);
+
+  const handleChange = useCallback(
+    (event: Event, newValue: number | number[], activeThumb: number) => {
+      if (Array.isArray(newValue)) {
+        setSaveValue(newValue);
+      } else {
+        setSaveValue([props.min ?? 0, newValue]);
+      }
+
+      if (!Array.isArray(newValue)) {
+        return;
+      }
+
+      if (activeThumb === 0) {
+        setValue([
+          Math.min(newValue[0], value[1] - minDistanceValue),
+          value[1],
+        ]);
+      } else {
+        setValue([
+          value[0],
+          Math.max(newValue[1], value[0] + minDistanceValue),
+        ]);
+      }
+    },
+    [minDistanceValue, props.min, value]
+  );
+
+  const {
+    runAction: update,
+    running: updating,
+    error,
+    clearError,
+  } = useAsyncAction((value: number[]) => {
+    if (fieldPathStart) {
+      updateDoc(docSnap.ref, fieldPathStart, value[0]);
+    }
+    updateDoc(docSnap.ref, fieldPath, value[1]);
+  });
+
+  useEffect(() => {
+    if (!updating) {
+      setValue([
+        saveValue[0] ?? props.min ?? 0,
+        saveValue[1] ?? props.max ?? 1,
+      ]);
+    }
+  }, [saveValue, updating, props.min, props.max]);
+
+  return (
+    <>
+      <Slider
+        value={value}
+        disabled={disabled || updating}
+        onChange={handleChange}
+        onChangeCommitted={(_, value) => update(value as number[])}
         {...props}
       />
       <Snackbar open={!!error} autoHideDuration={5000} onClose={clearError}>
@@ -381,11 +476,8 @@ export function FirestoreBackedTimeZoneSelect<DocType extends object>({
   const savedValue =
     docSnap.get(fieldPath) ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [value, setValue] = useState(savedValue);
-  const {
-    runAction: update,
-    running: updating,
-  } = useAsyncAction((enabled: number) =>
-    updateDoc(docSnap.ref, fieldPath, enabled)
+  const { runAction: update, running: updating } = useAsyncAction(
+    (enabled: number) => updateDoc(docSnap.ref, fieldPath, enabled)
   );
 
   useEffect(() => {
