@@ -20,7 +20,9 @@ export const isValidName = (name: string) => {
 
 export const isValidPhone = (phone: string) => {
     // Must be a valid phone number, can have dashes like XXX-XXX-XXXX
-    return !!phone.match(/^[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
+    // can also be international like +65 XXXX XXXX, so the input could be
+    // between 10 and 12 characters
+    return !!phone.match(/^(\+?[0-9]{10,12})$/);
 }
 
 export const isValidZip = (zip: string) => {
@@ -32,4 +34,3 @@ export const isValidAddress = (address: string) => {
     // Must be a valid address. With a number and a street name
     return !!address.match(/^[0-9]+ [a-zA-Z]+/);
 }
-

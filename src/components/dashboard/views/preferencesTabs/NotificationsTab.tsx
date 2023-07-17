@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { DocumentSnapshot } from "firebase/firestore";
-import phone from "phone";
 import {
   Typography,
   FormGroup,
@@ -13,9 +12,8 @@ import {
   EmailInput,
   FirestoreBackedSwitch,
   FirestoreBackedTextField,
-  PhoneNumberInput,
 } from "components/utils/forms";
-import { isValidEmail } from "utils/validators";
+import { isValidEmail, isValidPhone } from "utils/validators";
 
 const NotificationsTab: FC<{
   userConfigSnapshot: DocumentSnapshot<ClientConfig>;
@@ -63,12 +61,11 @@ const NotificationsTab: FC<{
           docSnap={userConfigSnapshot!}
           fieldPath="preferences.notifications.sms.phoneNumber"
           variant="standard"
-          isValid={(phoneNumber) => !phoneNumber || phone(phoneNumber).isValid}
+          isValid={(phoneNumber) => !phoneNumber || isValidPhone(phoneNumber)}
           helperText={(phoneNumber, validPhone) =>
             validPhone ? "" : "Invalid phone number:" + phoneNumber
           }
           sx={{ maxWidth: 300 }}
-          InputProps={{ inputComponent: PhoneNumberInput as any }}
         />
         <FormControlLabel
           control={

@@ -35,16 +35,10 @@ const SearchParamsTab: FC<{
         />
       </FormGroup>
       {searchParamsSliderList.map(
-        ({
-          label,
-          icon: C,
-          key,
-          fieldPathMin,
-          fieldPathMax,
-          min,
-          max,
-          step,
-        }) => {
+        (
+          { label, icon: C, key, fieldPathMin, fieldPathMax, min, max, step },
+          index
+        ) => {
           return (
             <>
               <Divider sx={{ marginTop: 2, marginBottom: 4 }} />
@@ -57,7 +51,7 @@ const SearchParamsTab: FC<{
               <Box sx={{ marginTop: 2 }}>
                 <FormGroup>
                   <FirestoreBackedRangeSlider
-                    key={key}
+                    key={index}
                     disabled={updatingAnything}
                     docSnap={userConfigSnapshot!}
                     min={min}

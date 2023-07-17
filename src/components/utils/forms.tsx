@@ -530,11 +530,9 @@ export const PhoneNumberInput = React.forwardRef<
   return (
     <IMaskInput
       {...other}
-      mask="+1[33] (000) 000-0000"
+      mask="(#00) 000-0000"
       definitions={{
-        "#": /[0-9]/,
-        1: /[1-9]/,
-        3: /[0-9]/,
+        "#": /[1-9]/,
       }}
       inputRef={ref as any}
       onAccept={(value: any) =>
