@@ -10,6 +10,7 @@ import {
   FirestoreBackedRangeSlider,
 } from "components/utils/forms";
 import searchParamsSliderList from "./searchParamsSliderList";
+import ExamplePop from "./ExamplePopup";
 
 const SearchParamsTab: FC<{
   userConfigSnapshot: DocumentSnapshot<ClientConfig>;
@@ -20,9 +21,13 @@ const SearchParamsTab: FC<{
     <>
       <Box sx={{ display: "flex", alignItems: "baseline" }}>
         <FindInPageIcon sx={{ mr: "10px" }} />
-        <Typography variant="h6" gutterBottom>
-          Search Term
-        </Typography>
+        <ExamplePop
+          hoverContent={
+            <Typography variant="h6" gutterBottom>
+              Search Term
+            </Typography>
+          }
+        />
       </Box>
       <FormGroup>
         <FirestoreBackedTextField
