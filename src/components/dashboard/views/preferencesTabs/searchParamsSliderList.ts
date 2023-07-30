@@ -44,7 +44,7 @@ const searchParamsSliderList: SearchParamsSliderListProps[] = [
         icon: BathtubIcon,
         fieldPathMin: "searchParams.minBaths",
         fieldPathMax: "searchParams.maxBaths",
-        min: 0,
+        min: 1,
         max: 5,
         step: 1,
     },
