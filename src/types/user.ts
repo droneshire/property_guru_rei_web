@@ -33,6 +33,7 @@ export interface Preferences {
 export interface ClientConfig {
   preferences: Preferences;
   searchParams: SearchParams;
+  listingIds: number[];
 }
 
 export const DEFAULT_USER_CONFIG = {
