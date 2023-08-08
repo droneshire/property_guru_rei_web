@@ -15,6 +15,7 @@ export interface SearchParams {
   minPrice: number;
   maxSize: number;
   minSize: number;
+  includeHbd: boolean;
 }
 
 export interface Preferences {
@@ -56,5 +57,6 @@ export const DEFAULT_USER_CONFIG = {
     minPrice: 0,
     maxSize: 10000,
     minSize: 0,
+    includeHbd: false,
   },
 }
