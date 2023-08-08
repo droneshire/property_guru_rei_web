@@ -25,7 +25,7 @@ const searchParamsSliderList: SearchParamsSliderListProps[] = [
         fieldPathMin: "searchParams.minPrice",
         fieldPathMax: "searchParams.maxPrice",
         min: 0,
-        max: 4000000,
+        max: 2000000,
         step: 10000,
     },
     {
